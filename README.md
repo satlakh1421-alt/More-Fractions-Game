@@ -1,6 +1,3 @@
-# More-Fractions-Game
-Math Game that is created for kids to play and learn about Fractions
-
 # 🍰 More Fractions Game
 An interactive, visual educational math game designed to strengthen understanding of fractions, comparisons, and equivalent parts through intuitive problem-solving.
 
