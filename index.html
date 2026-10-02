@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Fraction Orbit: Graviton Slingshot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="game-wrapper" id="game-container">
+
+  <!-- TOP HEADER BAR (In normal flex flow — NEVER overlaps HUD or game cards) -->
+  <header class="top-nav-bar" id="top-nav-bar">
+    <div class="nav-brand">
+      <span class="brand-badge">Cambridge Maths • Stage 5 • Floor 2</span>
+      <span class="brand-name">Fraction Orbit</span>
+    </div>
+    <div class="nav-controls">
+      <button class="control-btn" id="btn-sound-toggle" aria-label="Toggle Sound" title="Sound On / Off">
+        <span class="sound-icon-display" id="sound-icon">🔊</span>
+      </button>
+      <button class="control-btn" id="btn-fullscreen-toggle" aria-label="Toggle Fullscreen" title="Full Screen">
+        <span class="fullscreen-icon-display" id="fullscreen-icon">⛶</span>
+      </button>
+      <button class="control-btn restart-btn" id="btn-restart-nav" aria-label="Restart Game" title="Restart Game" style="display: none;">
+        <span>🔄</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SCREEN 1: START SCREEN -->
+  <section class="screen active" id="screen-start">
+    <div class="screen-card start-card">
+      <div class="badge-pill">Cambridge Mathematics • Ordering &amp; Comparing Fractions</div>
+      <h1 class="game-title">Fraction Orbit<br><span class="gradient-text">Graviton Slingshot</span></h1>
+      <p class="game-subtitle">Pull back, aim your trajectory, and slingshot fraction pods into the correct comparison docks (&lt; ½, = ½, &gt; ½, and Wholes)!</p>
+
+      <!-- Hero Visual Preview (Interactive Animated Canvas) -->
+      <div class="visual-hero">
+        <canvas id="canvas-hero-preview" width="340" height="150"></canvas>
+      </div>
+
+      <div class="menu-btn-group">
+        <button class="game-btn btn-primary" id="btn-play">
+          <span class="btn-icon">🚀</span> Launch Mission
+        </button>
+        <button class="game-btn btn-secondary" id="btn-instructions">
+          <span class="btn-icon">📖</span> Flight Manual
+        </button>
+      </div>
+
+      <div class="feature-badges">
+        <span>🎯 Slingshot Trajectory</span>
+        <span>⏱️ 50s Quick Rounds</span>
+        <span>📱 Touch &amp; Drag Friendly</span>
+        <span>✨ Zero Quizzes • Pure Action</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: VISUAL INSTRUCTIONS / FLIGHT MANUAL SCREEN -->
+  <section class="screen" id="screen-instructions">
+    <div class="screen-card instructions-card">
+      <div class="card-header">
+        <h2>Commander's Flight Manual</h2>
+        <p class="sub-hint">Visual guide — touch, test, and master the orbital physics in seconds!</p>
+      </div>
+
+      <!-- 3 VISUAL GRAPHICS CARDS (NO WALLS OF TEXT) -->
+      <div class="instruction-grid">
+        
+        <!-- VISUAL CARD 1: FRACTION COMPARISON RADAR -->
+        <div class="instruction-card">
+          <div class="step-badge">Phase 1</div>
+          <div class="instruction-visual">
+            <svg viewBox="0 0 160 90" class="step-svg" aria-label="Comparison visualization diagram">
+              <!-- Background radar screen -->
+              <rect x="5" y="5" width="150" height="80" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+              <!-- Number line track -->
+              <line x1="20" y1="52" x2="140" y2="52" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+              <!-- Target Benchmarks -->
+              <circle cx="25" cy="52" r="7" fill="#6366f1"/>
+              <text x="25" y="40" font-size="8.5" fill="#a5b4fc" text-anchor="middle" font-weight="bold">&lt; ½</text>
+              <circle cx="80" cy="52" r="7" fill="#06b6d4"/>
+              <text x="80" y="40" font-size="8.5" fill="#67e8f9" text-anchor="middle" font-weight="bold">= ½</text>
+              <circle cx="135" cy="52" r="7" fill="#10b981"/>
+              <text x="135" y="40" font-size="8.5" fill="#6ee7b7" text-anchor="middle" font-weight="bold">&gt; ½</text>
+              <!-- Example pod 4/9 -->
+              <circle cx="48" cy="52" r="10" fill="#f43f5e" stroke="#fff" stroke-width="1.5"/>
+              <text x="48" y="55" font-size="8" fill="#fff" text-anchor="middle" font-weight="bold">⁴⁄₉</text>
+              <text x="80" y="76" font-size="8.5" fill="#facc15" text-anchor="middle" font-weight="bold">⁴⁄₉ &lt; ½ (Less than half!)</text>
+            </svg>
+          </div>
+          <h3>1. Read &amp; Compare</h3>
+          <p>Inspect the fraction on your pod. Compare it to the benchmark: is it <strong>&lt; ½</strong>, <strong>= ½</strong>, or <strong>&gt; ½</strong>?</p>
+        </div>
+
+        <!-- VISUAL CARD 2: SLINGSHOT PULL & TRAJECTORY -->
+        <div class="instruction-card">
+          <div class="step-badge">Phase 2</div>
+          <div class="instruction-visual">
+            <svg viewBox="0 0 160 90" class="step-svg" aria-label="Slingshot pull diagram">
+              <rect x="5" y="5" width="150" height="80" rx="8" fill="#0f172a" stroke="#818cf8" stroke-width="1.5"/>
+              <!-- Slingshot fork -->
+              <path d="M 28 75 L 35 55 L 26 42 M 35 55 L 44 42" stroke="#64748b" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <!-- Rubber band pulled back -->
+              <line x1="26" y1="42" x2="16" y2="60" stroke="#f43f5e" stroke-width="2.5"/>
+              <line x1="44" y1="42" x2="16" y2="60" stroke="#f43f5e" stroke-width="2.5"/>
+              <!-- Pod being pulled -->
+              <circle cx="16" cy="60" r="8" fill="#f43f5e" stroke="#fff" stroke-width="1"/>
+              <!-- Drag touch indicator -->
+              <circle cx="16" cy="60" r="14" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <!-- Trajectory Arc -->
+              <path d="M 16 60 Q 65 15 130 38" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="4,4"/>
+              <!-- Target Dock -->
+              <circle cx="130" cy="38" r="14" fill="#1e1b4b" stroke="#10b981" stroke-width="2"/>
+              <text x="130" y="42" font-size="9" fill="#10b981" text-anchor="middle" font-weight="900">DOCK</text>
+            </svg>
+          </div>
+          <h3>2. Pull Back & Aim Arc</h3>
+          <p>Touch and drag backward on the launcher to aim the <strong>prediction arc</strong> towards the target gravity dock, then release to launch!</p>
+        </div>
+
+        <!-- VISUAL CARD 3: GRAVITY CAPTURE & BONUSES -->
+        <div class="instruction-card">
+          <div class="step-badge">Phase 3</div>
+          <div class="instruction-visual">
+            <svg viewBox="0 0 160 90" class="step-svg" aria-label="Score and combos diagram">
+              <rect x="5" y="5" width="150" height="80" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+              <!-- Swirl vortex -->
+              <circle cx="80" cy="45" r="28" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8,4" opacity="0.6"/>
+              <circle cx="80" cy="45" r="18" fill="#10b981" opacity="0.3"/>
+              <circle cx="80" cy="45" r="10" fill="#10b981"/>
+              <text x="80" y="49" font-size="10" fill="#fff" text-anchor="middle" font-weight="900">3</text>
+              <!-- Star bonuses -->
+              <polygon points="35,30 38,37 45,37 40,41 42,48 35,44 28,48 30,41 25,37 32,37" fill="#facc15"/>
+              <polygon points="125,25 128,32 135,32 130,36 132,43 125,39 118,43 120,36 115,32 122,32" fill="#facc15"/>
+              <text x="80" y="80" font-size="9" fill="#4ade80" text-anchor="middle" font-weight="bold">+150 Perfect Dock!</text>
+            </svg>
+          </div>
+          <h3>3. Collect Stars & Combo</h3>
+          <p>Fly through floating star coins for bonus points! Match docks in consecutive streaks to unlock massive <strong>combo multipliers</strong>.</p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE TEST SLINGSHOT MINI-WIDGET -->
+      <div class="interactive-practice-box">
+        <div class="practice-title">
+          <span>🎮 Quick Launch Simulator (Try dragging below right now!):</span>
+        </div>
+        <div class="mini-sim-container">
+          <canvas id="canvas-practice-sim" width="460" height="120"></canvas>
+          <div class="sim-instructions-badge" id="sim-feedback-badge">Drag back on the orange orb and release!</div>
+        </div>
+      </div>
+
+      <div class="instructions-actions">
+        <button class="game-btn btn-primary" id="btn-start-from-instructions">
+          <span class="btn-icon">⚡</span> Got It, Let's Play!
+        </button>
+        <button class="game-btn btn-secondary" id="btn-back-to-start">
+          <span class="btn-icon">◀</span> Back to Menu
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: GAMEPLAY SCREEN (FULLSCREEN CANVAS + CRISP HUD) -->
+  <section class="screen" id="screen-game">
+    
+    <!-- IN-GAME HUD STATUS BAR -->
+    <div class="game-hud" id="game-hud">
+      <!-- LEVEL & TARGET OBJECTIVE -->
+      <div class="hud-item hud-level-info">
+        <span class="hud-label">SECTOR</span>
+        <span class="hud-val" id="hud-level-val">1 / 3</span>
+      </div>
+
+      <!-- TIMER WITH PROGRESS RING / BAR -->
+      <div class="hud-item hud-timer-box">
+        <span class="hud-label">OXYGEN TIMER</span>
+        <div class="timer-display">
+          <span class="timer-icon">⏱️</span>
+          <span class="hud-val" id="hud-timer-val">50s</span>
+        </div>
+        <div class="timer-bar-track">
+          <div class="timer-bar-fill" id="timer-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- CURRENT POD ESTIMATION DISPLAY -->
+      <div class="hud-item hud-target-card">
+        <span class="hud-label">ACTIVE POD</span>
+        <div class="active-fraction-badge" id="active-fraction-display">
+          <span class="frac-main" id="hud-frac-text">⁴⁄₉</span>
+          <span class="frac-hint" id="hud-frac-hint">Estimate Rounding</span>
+        </div>
+      </div>
+
+      <!-- SCORE & STREAK -->
+      <div class="hud-item hud-score-box">
+        <span class="hud-label">CREDITS</span>
+        <span class="hud-val highlight-score" id="hud-score-val">0</span>
+        <span class="hud-combo-badge" id="hud-combo-badge">1x</span>
+      </div>
+
+      <!-- LIVES / HULL SHIELD -->
+      <div class="hud-item hud-lives-box">
+        <span class="hud-label">SHIELDS</span>
+        <div class="lives-hearts" id="hud-lives-container">
+          <span class="heart active">❤️</span>
+          <span class="heart active">❤️</span>
+          <span class="heart active">❤️</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN INTERACTIVE SLINGSHOT CANVAS CONTAINER -->
+    <div class="canvas-viewport" id="canvas-viewport">
+      <canvas id="canvas-game" class="game-canvas"></canvas>
+
+      <!-- EDUCATIONAL DOCK FEEDBACK BANNER (Floating overlay notification) -->
+      <div class="dock-feedback-banner" id="dock-feedback-banner">
+        <div class="feedback-icon" id="feedback-icon">✨</div>
+        <div class="feedback-text">
+          <div class="feedback-title" id="feedback-title">Perfect Dock!</div>
+          <div class="feedback-subtitle" id="feedback-subtitle">4/9 rounds to 1/2</div>
+        </div>
+        <div class="feedback-points" id="feedback-points">+150</div>
+      </div>
+
+      <!-- LEVEL UP INTERMISSION OVERLAY -->
+      <div class="level-up-modal" id="level-up-modal">
+        <div class="level-up-card">
+          <div class="level-up-stars">⭐⭐⭐</div>
+          <h2 id="modal-level-title">Sector 1 Cleared!</h2>
+          <p id="modal-level-desc">Approaching Asteroid Belt. Round mixed fractions to whole numbers!</p>
+          <button class="game-btn btn-primary" id="btn-next-level">
+            <span class="btn-icon">🚀</span> Next Sector
+          </button>
+        </div>
+      </div>
+
+      <!-- TABLET ASSIST FIRE BUTTON (Optional helper for users who prefer tap-to-fire) -->
+      <div class="tablet-controls-bar" id="tablet-controls-bar">
+        <div class="aim-hint-pill">👆 Drag backwards on the launcher to aim & power, then let go!</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- SCREEN 4: END GAME SCREEN (Complies with Platform Standards: Try Again & Submit calling game.end()) -->
+  <section class="screen" id="screen-end">
+    <div class="screen-card end-card">
+      <div class="end-badge" id="end-status-badge">MISSION COMPLETE</div>
+      
+      <h1 class="end-title" id="end-title">Orbital Mastery!</h1>
+      <p class="end-subtitle" id="end-subtitle">You skillfully navigated the fraction gravitational fields!</p>
+
+      <!-- ANIMATED STARS RATING DISPLAY (0 to 3 Stars) -->
+      <div class="star-rating-container" id="star-rating-container">
+        <div class="star-slot" id="star-1">
+          <svg viewBox="0 0 24 24" class="star-svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="star-slot" id="star-2">
+          <svg viewBox="0 0 24 24" class="star-svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="star-slot" id="star-3">
+          <svg viewBox="0 0 24 24" class="star-svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+      </div>
+      <div class="star-summary-text" id="star-summary-text">3 Stars Rating</div>
+
+      <!-- PERFORMANCE STATS GRID -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">FINAL SCORE</span>
+          <span class="stat-val highlight" id="stat-final-score">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">ACCURACY</span>
+          <span class="stat-val" id="stat-accuracy">100%</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">SECTOR REACHED</span>
+          <span class="stat-val" id="stat-sector">Sector 3</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">BEST STREAK</span>
+          <span class="stat-val" id="stat-best-streak">5x</span>
+        </div>
+      </div>
+
+      <!-- PLATFORM REQUIRED ACTION BUTTONS: TRY AGAIN & SUBMIT -->
+      <div class="end-actions-group">
+        <button class="game-btn btn-secondary" id="btn-try-again">
+          <span class="btn-icon">🔄</span> Try Again
+        </button>
+        <button class="game-btn btn-primary" id="btn-submit-score">
+          <span class="btn-icon">⭐</span> Submit Score
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
